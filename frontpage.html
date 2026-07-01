@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title> | Gateway</title>
+    <style>
+        :root {
+            /* Using a vibrant gradient similar to your reference image */
+            --bg-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ed43a4 100%);
+            --candidate-color: #00d2ff;
+            --company-color: #00ff88;
+            --glass: rgba(255, 255, 255, 0.95);
+        }
+
+        body,
+        html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            width: 100%;
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            overflow: hidden;
+            background: var(--bg-gradient);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- 3D Floating Icons Container --- */
+        .background-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .floating-icon {
+            position: absolute;
+            filter: drop-shadow(10px 10px 20px rgba(0, 0, 0, 0.2));
+            animation: floating ease-in-out infinite;
+        }
+
+        @keyframes floating {
+            0% {
+                transform: translateY(0px) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(5deg);
+            }
+
+            100% {
+                transform: translateY(0px) rotate(0deg);
+            }
+        }
+
+        /* --- Main Card --- */
+        .container {
+            position: relative;
+            z-index: 10;
+            background: var(--glass);
+            padding: 50px 40px;
+            border-radius: 30px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.2);
+            max-width: 450px;
+            width: 85%;
+            text-align: center;
+        }
+
+        .logo-box {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            border-radius: 18px;
+            margin: 0 auto 25px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 30px;
+            transform: rotate(-5deg);
+        }
+
+        h1 {
+            color: #333;
+            font-size: 2.2rem;
+            margin: 0 0 10px;
+            font-weight: 800;
+        }
+
+        p {
+            color: #666;
+            margin-bottom: 40px;
+            font-size: 1rem;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 20px 10px;
+            text-decoration: none;
+            border-radius: 15px;
+            background: #f8f9fa;
+            border: 1px solid #eee;
+            transition: all 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn:hover {
+            transform: translateY(-5px);
+            background: #fff;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .btn-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 4px;
+        }
+
+        .candidate-btn .btn-title {
+            color: #4facfe;
+        }
+
+        .company-btn .btn-title {
+            color: #00f2fe;
+        }
+
+        .btn-label {
+            font-size: 0.7rem;
+            color: #aaa;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="background-layer" id="bgLayer">
+    </div>
+
+    <div class="container">
+        <div class="logo-box">AI</div>
+        <h1>NextGen AI</h1>
+        <p>Select your workspace to begin.</p>
+
+        <div class="button-group">
+            <a href="student sign.html" class="btn candidate-btn">
+                <span class="btn-title">Candidate</span>
+                <span class="btn-label">Join Portal</span>
+            </a>
+
+            <a href="company.html" class="btn company-btn">
+                <span class="btn-title">Company</span>
+                <span class="btn-label">Hire Talent</span>
+            </a>
+        </div>
+    </div>
+
+    <script>
+        const bgLayer = document.getElementById('bgLayer');
+
+        // Using the high-quality 3D isometric icons you requested
+        const icons = [
+            'https://img.icons8.com/isometric/512/neural-network.png',
+            'https://img.icons8.com/isometric/512/pdf-2.png',
+            'https://img.icons8.com/isometric/512/line-chart.png'
+        ];
+
+        // Positions scattered across the whole background (similar to your image)
+        const positions = [
+            { top: '15%', left: '10%', size: '120px', delay: '0s' },
+            { top: '20%', left: '80%', size: '140px', delay: '1s' },
+            { top: '70%', left: '15%', size: '100px', delay: '2s' },
+            { top: '75%', left: '85%', size: '130px', delay: '0.5s' },
+            { top: '10%', left: '50%', size: '90px', delay: '1.5s' },
+            { top: '85%', left: '45%', size: '110px', delay: '2.5s' }
+        ];
+
+        positions.forEach((pos, index) => {
+            const img = document.createElement('img');
+            img.src = icons[index % icons.length];
+            img.className = 'floating-icon';
+            img.style.top = pos.top;
+            img.style.left = pos.left;
+            img.style.width = pos.size;
+            img.style.animationDuration = (3 + Math.random() * 2) + 's';
+            img.style.animationDelay = pos.delay;
+            bgLayer.appendChild(img);
+        });
+    </script>
+</body>
+
+</html>

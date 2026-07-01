@@ -1,0 +1,1162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Interview | Answer Questions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #ed43a4 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .interview-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 900px;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        /* Top Header */
+        .header {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+
+        .header p {
+            font-size: 0.95rem;
+            opacity: 0.9;
+        }
+
+        /* Progress Bar */
+        .progress-section {
+            padding: 20px 25px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 10px;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 10px;
+            transition: width 0.3s ease;
+        }
+
+        .progress-text {
+            font-size: 0.85rem;
+            color: #666;
+            text-align: center;
+        }
+
+        /* Main Content */
+        .content {
+            padding: 40px 25px;
+        }
+
+        /* Question Display */
+        .question-section {
+            margin-bottom: 30px;
+        }
+
+        .question-counter {
+            color: #667eea;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-bottom: 10px;
+        }
+
+        .question-text {
+            font-size: 1.4rem;
+            color: #333;
+            font-weight: 600;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        /* Video Section */
+        .video-section {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        @media (max-width: 768px) {
+            .video-section {
+                flex-direction: column;
+            }
+        }
+
+        .video-container {
+            flex: 1;
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+        }
+
+        #video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: scaleX(-1);
+        }
+
+        .controls-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Recording Status */
+        .recording-status {
+            background: #f0f4f8;
+            padding: 15px;
+            border-radius: 12px;
+            border-left: 4px solid #667eea;
+        }
+
+        .status-label {
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .status-value {
+            font-size: 1.1rem;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .recording-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background: #ff4444;
+            border-radius: 50%;
+            animation: pulse 1s infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* Buttons */
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 20px;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #f0f4f8;
+            color: #333;
+            border: 2px solid #e0e0e0;
+        }
+
+        .btn-secondary:hover {
+            background: #e8ecf2;
+        }
+
+        .btn-danger {
+            background: #ff6b6b;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #ff5252;
+        }
+
+        button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        /* Navigation */
+        .navigation {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 30px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .nav-btn {
+            flex: 1;
+            padding: 16px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            color: #333;
+            border-radius: 10px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .nav-btn:hover:not(:disabled) {
+            border-color: #667eea;
+            color: #667eea;
+        }
+
+        .nav-btn:disabled {
+            opacity: 0.3;
+            cursor: not-allowed;
+        }
+
+        /* Submitted Answer Display */
+        .submitted-answer {
+            background: #e8f5e9;
+            border-left: 4px solid #4caf50;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .submitted-answer p {
+            color: #2e7d32;
+            font-weight: 500;
+            margin: 0;
+        }
+
+        /* Video Playback */
+        .playback-container {
+            background: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            aspect-ratio: 4/3;
+            margin-bottom: 15px;
+        }
+
+        #playback-video {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        /* Interview Complete */
+        .complete-section {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .complete-section h2 {
+            color: #4caf50;
+            font-size: 1.8rem;
+            margin-bottom: 15px;
+        }
+
+        .complete-section p {
+            color: #666;
+            margin-bottom: 30px;
+        }
+
+        .summary-box {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            text-align: left;
+        }
+
+        .summary-box h3 {
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .summary-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 8px 0;
+            color: #666;
+        }
+
+        .summary-item::before {
+            content: '✓';
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .btn-finish {
+            background: linear-gradient(135deg, #4caf50, #45a049);
+            color: white;
+            padding: 16px 40px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-finish:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 16px rgba(76, 175, 80, 0.3);
+        }
+
+        /* Upload Status */
+        .upload-status {
+            padding: 12px 15px;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .upload-status.idle     { background: #f0f4f8; color: #888; border: 1px solid #e0e0e0; }
+        .upload-status.uploading{ background: #fff3cd; color: #856404; border: 1px solid #ffc107; }
+        .upload-status.success  { background: #e8f5e9; color: #2e7d32; border: 1px solid #4caf50; }
+        .upload-status.error    { background: #fdecea; color: #b71c1c; border: 1px solid #ef5350; }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .spinner {
+            width: 16px; height: 16px;
+            border: 2px solid #ffc107;
+            border-top-color: transparent;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="interview-container">
+        <!-- Header -->
+        <div class="header" id="header">
+            <h1>AI Interview</h1>
+            <p>Answer the questions by recording your responses</p>
+        </div>
+
+        <!-- Progress -->
+        <div class="progress-section">
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText">Question 1 of 5</div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content">
+            <!-- Current Question View -->
+            <div id="question-view" style="display: none;">
+                <div class="question-section">
+                    <div class="question-counter" id="questionCounter">Question 1 of 5</div>
+                    <div class="question-text" id="questionText">Loading question...</div>
+                </div>
+
+                <div class="video-section">
+                    <div class="video-container">
+                        <video id="video" autoplay playsinline></video>
+                    </div>
+
+                    <div class="controls-section">
+                        <div class="recording-status">
+                            <div class="status-label">Recording Status</div>
+                            <div class="status-value" id="recordingStatus">Ready</div>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn-primary" id="startBtn" onclick="startRecording()">Start Recording</button>
+                            <button class="btn-danger" id="stopBtn" onclick="stopRecording()" disabled>Stop Recording</button>
+                        </div>
+
+                        <div class="button-group">
+                            <button class="btn-primary" id="submitBtn" onclick="submitRecording()" disabled style="display:none;">✓ Submit Answer</button>
+                            <button class="btn-secondary" id="clearBtn" onclick="clearRecording()">Clear Recording</button>
+                        </div>
+
+                        <!-- Upload status indicator -->
+                        <div class="upload-status idle" id="uploadStatus">
+                            <span id="uploadIcon">☁️</span>
+                            <span id="uploadMsg">Not uploaded yet</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Navigation -->
+                <div class="navigation">
+                    <button class="nav-btn" id="prevBtn" onclick="previousQuestion()">← Previous</button>
+                    <button class="nav-btn" id="nextBtn" onclick="nextQuestion()">Next →</button>
+                </div>
+            </div>
+
+            <!-- Complete View -->
+            <div id="complete-view" style="display: none;">
+                <div class="complete-section">
+                    <h2>Interview Complete! 🎉</h2>
+                    <p>Thank you for completing the interview. Your responses have been recorded.</p>
+
+                    <div class="summary-box">
+                        <h3>Interview Summary</h3>
+                        <div class="summary-item">5 questions answered</div>
+                        <div class="summary-item">All responses recorded</div>
+                        <div class="summary-item">Ready for review</div>
+                    </div>
+
+                    <button class="btn-finish" onclick="finishInterview()">Finish & Return Home</button>
+                </div>
+            </div>
+
+            <!-- Loading View -->
+            <div id="loading-view" style="text-align: center; padding: 40px;">
+                <p>Loading interview questions...</p>
+                <p id="loading-error" style="color: #d32f2f; margin-top: 20px; display: none;"></p>
+                <button id="retryBtn" onclick="retryInitialize()" style="display:none; margin-top:15px; padding:10px 20px; background:#667eea; color:white; border:none; border-radius:8px; cursor:pointer;">Retry</button>
+            </div>
+        </div>
+    </div>
+
+    <canvas id="canvas"></canvas>
+
+    <script>
+        // =========================
+        // Global Variables
+        // =========================
+        let mediaStream = null;
+        let mediaRecorder = null;
+        let recordedChunks = [];
+        let recordedAnswers = {}; // Map of question index -> { url, pending, chunks }
+        let email = localStorage.getItem('email');
+        let questionsLoaded = false;
+        const TOTAL_QUESTIONS = 5; // HARD CONSTANT — never changes
+
+        // Max recording duration per question (in seconds)
+        const MAX_RECORDING_SECONDS = 120;
+        let recordingTimer = null;
+        let recordingCountdown = 0;
+
+        // ── Persistent state via localStorage ──
+        // Questions are stored once and reused — never regenerated mid-session
+        function getStoredQuestions() {
+            try {
+                const stored = localStorage.getItem('interview_questions_' + email);
+                if (stored) {
+                    const arr = JSON.parse(stored);
+                    if (Array.isArray(arr) && arr.length === TOTAL_QUESTIONS) return arr;
+                }
+            } catch(e) {}
+            return null;
+        }
+
+        function storeQuestions(qs) {
+            try { localStorage.setItem('interview_questions_' + email, JSON.stringify(qs)); } catch(e) {}
+        }
+
+        function getCurrentQuestion() {
+            const n = parseInt(localStorage.getItem('interview_current_q_' + email) || '0');
+            return isNaN(n) ? 0 : Math.min(n, TOTAL_QUESTIONS - 1);
+        }
+
+        function setCurrentQuestion(n) {
+            localStorage.setItem('interview_current_q_' + email, String(n));
+        }
+
+        // Live variables — always in sync with localStorage
+        let questions = getStoredQuestions() || [];
+        let currentQuestion = getCurrentQuestion();
+        let totalQuestions = TOTAL_QUESTIONS;
+
+        // Session ID: fixed per tab — stored in localStorage so camera re-init doesn't change it
+        let session_id = localStorage.getItem('interview_session_id_' + email);
+        if (!session_id) {
+            session_id = 'session_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+            localStorage.setItem('interview_session_id_' + email, session_id);
+        }
+
+        // =========================
+        // Initialize
+        // =========================
+        async function retryInitialize() {
+            document.getElementById('loading-error').style.display = 'none';
+            document.getElementById('retryBtn').style.display = 'none';
+            document.getElementById('loading-view').innerHTML = '<p>Loading interview questions...</p>';
+            // Do NOT clear stored questions — just retry connection
+            await initializeInterview();
+        }
+
+        async function initializeInterview() {
+            if (!email) {
+                document.getElementById('loading-view').innerHTML = '<p style="color: #d32f2f;">Please log in first</p>';
+                document.getElementById('retryBtn').hidden = true;
+                setTimeout(() => window.location.href = 'student sign.html', 2000);
+                return;
+            }
+
+            try {
+                // ── Use stored questions if available — never regenerate mid-session ──
+                const stored = getStoredQuestions();
+                if (stored) {
+                    questions = stored;
+                    currentQuestion = getCurrentQuestion();
+                    console.log(`✅ Restored ${questions.length} questions from session. On Q${currentQuestion + 1}`);
+                } else {
+                    // First time — fetch from backend
+                    const response = await fetch(`http://127.0.0.1:8000/generate-questions`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                        body: `email=${encodeURIComponent(email)}`
+                    });
+
+                    const data = await response.json();
+
+                    if (data.error) throw new Error(data.error);
+
+                    if (data.questions && data.questions.length > 0) {
+                        questions = data.questions.slice(0, TOTAL_QUESTIONS);
+                        while (questions.length < TOTAL_QUESTIONS) {
+                            questions.push("Can you describe a technical challenge you solved recently?");
+                        }
+                        storeQuestions(questions);  // Persist — survives re-init
+                        currentQuestion = 0;
+                        setCurrentQuestion(0);
+                        console.log(`✅ Fetched and stored ${questions.length} questions`);
+                    } else {
+                        throw new Error("No questions received from backend");
+                    }
+                }
+
+                totalQuestions = TOTAL_QUESTIONS; // Always 5
+
+                // ── NEW: Fetch existing recordings from backend to restore state ──
+                await fetchExistingRecordings();
+
+                // Initialize camera (safe to call multiple times)
+                await initializeCamera();
+
+                // Show question view
+                document.getElementById('loading-view').style.display = 'none';
+                document.getElementById('question-view').style.display = 'block';
+
+                displayQuestion();
+
+            } catch (error) {
+                console.error('Initialization error:', error);
+                const errorDiv = document.getElementById('loading-error');
+                errorDiv.textContent = 'Error: ' + error.message;
+                errorDiv.style.display = 'block';
+                document.getElementById('retryBtn').style.display = 'inline-block';
+            }
+        }
+
+        async function fetchExistingRecordings() {
+            try {
+                console.log(`🔍 Checking for existing recordings for ${email}...`);
+                const response = await fetch(`http://127.0.0.1:8000/interview-videos?email=${encodeURIComponent(email)}`);
+                const data = await response.json();
+                
+                if (data.videos && Array.isArray(data.videos)) {
+                    data.videos.forEach(v => {
+                        recordedAnswers[v.question_index] = {
+                            url: v.video_url,
+                            pending: false,
+                            chunks: [] // Don't have chunks, but url is enough
+                        };
+                    });
+                    console.log(`✅ Loaded ${Object.keys(recordedAnswers).length} existing answers from database`);
+                }
+            } catch (e) {
+                console.error("❌ Failed to fetch existing recordings:", e);
+            }
+        }
+
+        // =========================
+        // Camera Functions
+        // =========================
+        async function initializeCamera() {
+            try {
+                // Try with standard constraints first
+                try {
+                    mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: { 
+                            width: { ideal: 640 }, 
+                            height: { ideal: 480 },
+                            facingMode: 'user'
+                        },
+                        audio: true
+                    });
+                } catch (e) {
+                    // Fallback to basic constraints if the above fails
+                    console.log('Trying with basic constraints...');
+                    mediaStream = await navigator.mediaDevices.getUserMedia({
+                        video: true,
+                        audio: true
+                    });
+                }
+
+                document.getElementById('video').srcObject = mediaStream;
+                console.log('Camera initialized successfully');
+                
+            } catch (error) {
+                console.error('Camera error:', error);
+                let errorMessage = '';
+
+                // Check if opened via file:// protocol (most common reason)
+                if (window.location.protocol === 'file:') {
+                    errorMessage = '⚠️ Camera blocked: This page is opened as a local file.\n\nFIX: Open this page through Live Server in VS Code:\n→ Right-click the HTML file → "Open with Live Server"\n→ Then visit: http://localhost:5500/interview.html';
+                } else if (error.name === 'NotAllowedError') {
+                    errorMessage = '❌ Camera permission denied!\n\nFIX: Click the camera icon 🎥 in your browser address bar and Allow camera access, then refresh.';
+                } else if (error.name === 'NotFoundError') {
+                    errorMessage = '❌ No camera found.\n\nFIX: Make sure your webcam is connected and not in use by another app (e.g. Teams, Zoom).';
+                } else if (error.name === 'NotReadableError') {
+                    errorMessage = '❌ Camera is already in use!\n\nFIX: Close other apps using your camera (Teams, Zoom, Skype, etc.) and refresh.';
+                } else if (error.name === 'SecurityError') {
+                    errorMessage = '❌ Camera blocked by browser security.\n\nFIX: Open via Live Server (http://localhost:5500) instead of file://.';
+                } else {
+                    errorMessage = '❌ Camera Error: ' + error.name + ' - ' + error.message;
+                }
+
+                // Show error on the page prominently instead of just alert
+                const loadingView = document.getElementById('loading-view');
+                if (loadingView) {
+                    loadingView.style.display = 'block';
+                    loadingView.innerHTML = `
+                        <div style="background:#fff3cd;border:2px solid #ffc107;padding:25px;border-radius:12px;text-align:left;max-width:500px;margin:auto;">
+                            <h3 style="color:#856404;margin-bottom:15px;">📷 Camera Access Problem</h3>
+                            <pre style="white-space:pre-wrap;color:#333;font-family:inherit;font-size:0.95rem;">${errorMessage}</pre>
+                            <br>
+                            <button onclick="window.location.reload()" style="padding:10px 20px;background:#667eea;color:white;border:none;border-radius:8px;cursor:pointer;font-weight:600;">🔄 Retry</button>
+                        </div>`;
+                    document.getElementById('question-view').style.display = 'none';
+                } else {
+                    alert(errorMessage);
+                }
+                // Don't redirect - allow user to try again
+                console.error('Full error:', error);
+            }
+        }
+
+        // =========================
+        // Recording Functions
+        // =========================
+        function startRecording() {
+            if (!mediaStream) {
+                alert('Camera not initialized');
+                return;
+            }
+
+            // GUARD: Only allow recording if we haven't finished all 5 questions
+            if (currentQuestion >= totalQuestions) {
+                alert('All 5 questions have been answered. Please finish the interview.');
+                return;
+            }
+
+            recordedChunks = [];
+            const options = { mimeType: 'video/webm' };
+
+            if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+                options.mimeType = 'video/webm;codecs=vp8';
+            }
+
+            mediaRecorder = new MediaRecorder(mediaStream, options);
+
+            mediaRecorder.ondataavailable = e => {
+                if (e.data.size > 0) {
+                    recordedChunks.push(e.data);
+                }
+            };
+
+            mediaRecorder.onstart = () => {
+                recordingCountdown = MAX_RECORDING_SECONDS;
+                document.getElementById('recordingStatus').innerHTML = 
+                    `<span class="recording-indicator"></span>Recording... (${recordingCountdown}s remaining)`;
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('stopBtn').disabled = false;
+
+                // Auto-stop countdown timer
+                recordingTimer = setInterval(() => {
+                    recordingCountdown--;
+                    if (recordingCountdown <= 0) {
+                        clearInterval(recordingTimer);
+                        recordingTimer = null;
+                        stopRecording(); // Auto-stop when time is up
+                    } else {
+                        const statusEl = document.getElementById('recordingStatus');
+                        if (statusEl && mediaRecorder && mediaRecorder.state === 'recording') {
+                            statusEl.innerHTML = `<span class="recording-indicator"></span>Recording... (${recordingCountdown}s remaining)`;
+                        }
+                    }
+                }, 1000);
+            };
+
+            mediaRecorder.onstop = () => {
+                // Clear any running countdown timer
+                if (recordingTimer) {
+                    clearInterval(recordingTimer);
+                    recordingTimer = null;
+                }
+
+                document.getElementById('recordingStatus').textContent = 'Recorded ✓';
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('stopBtn').disabled = true;
+
+                // Save the chunks locally (waiting for manual submit)
+                recordedAnswers[currentQuestion] = { chunks: recordedChunks.slice(), url: null, pending: true };
+
+                // Show Submit button for user to confirm
+                document.getElementById('submitBtn').style.display = 'inline-block';
+                document.getElementById('submitBtn').disabled = false;
+                setUploadStatus('idle', '⏳', 'Click "Submit Answer" to save');
+                
+                // Disable Next button until answer is submitted
+                document.getElementById('nextBtn').disabled = true;
+            };
+
+            mediaRecorder.start();
+        }
+
+        function stopRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+        }
+
+        function clearRecording() {
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+
+            // Clear countdown timer if running
+            if (recordingTimer) {
+                clearInterval(recordingTimer);
+                recordingTimer = null;
+            }
+
+            recordedChunks = [];
+            recordedAnswers[currentQuestion] = null;
+            document.getElementById('recordingStatus').textContent = 'Ready';
+            document.getElementById('startBtn').disabled = false;
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('nextBtn').disabled = true;
+            setUploadStatus('idle', '☁️', 'Not uploaded yet');
+        }
+
+        // =========================
+        // Manual Submit Function
+        // =========================
+        async function submitRecording() {
+            console.log(`📤 Submitting Q${currentQuestion + 1} (currentQuestion=${currentQuestion})`);
+            
+            const chunks = recordedAnswers[currentQuestion]?.chunks;
+            if (!chunks || chunks.length === 0) {
+                alert('No recording to submit');
+                return;
+            }
+
+            // Hide submit button while uploading
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').style.display = 'none';
+            document.getElementById('clearBtn').disabled = true;
+
+            // Upload to server
+            await uploadVideoToServer(chunks, currentQuestion);
+        }
+
+        // =========================
+        // Video Upload to Cloudinary (via backend)
+        // =========================
+        async function uploadVideoToServer(chunks, questionIdx) {
+            console.log(`📤 Uploading Q${questionIdx + 1} with questionIdx=${questionIdx}, question_text="${questions[questionIdx]}"`);
+            
+            // Block next button while uploading
+            document.getElementById('nextBtn').disabled = true;
+            setUploadStatus('uploading', null, 'Storing answer in database...');
+
+            try {
+                const blob = new Blob(chunks, { type: 'video/webm' });
+                const formData = new FormData();
+                formData.append('email', email);
+                formData.append('session_id', session_id);
+                formData.append('question_index', questionIdx);
+                formData.append('question_text', questions[questionIdx] || '');
+                formData.append('file', blob, `question_${questionIdx + 1}.webm`);
+
+                console.log(`📋 FormData prepared: q_index=${questionIdx}, q_text="${questions[questionIdx]}"`);
+
+                const response = await fetch('http://127.0.0.1:8000/upload-video', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const data = await response.json();
+
+                if (data.error) {
+                    throw new Error(data.error);
+                }
+
+                // Store cloudinary URL and mark as submitted
+                recordedAnswers[questionIdx] = { ...recordedAnswers[questionIdx], url: data.video_url, pending: false };
+                
+                console.log(`✅ Q${questionIdx + 1} uploaded successfully`);
+                setUploadStatus('success', '✅', `Answer Stored Successfully (Q${questionIdx + 1})`);
+                document.getElementById('nextBtn').disabled = false;
+                document.getElementById('clearBtn').disabled = false;
+
+                // IMPORTANT FIX: Auto-advance to the next question to prevent the user from feeling 'stuck' waiting for the Next button!
+                setTimeout(() => {
+                    if (currentQuestion < totalQuestions - 1) {
+                        nextQuestion();
+                    } else if (currentQuestion === totalQuestions - 1) {
+                        // If it's the last question, auto-click Finish
+                        finishInterview();
+                    }
+                }, 1500);
+
+            } catch (err) {
+                console.error('Upload error:', err);
+                // Show clear error — do NOT enable Next until upload succeeds
+                setUploadStatus('error', '❌', 'Upload failed: ' + err.message + ' — Please re-record and try again.');
+                document.getElementById('nextBtn').disabled = true;
+                document.getElementById('startBtn').disabled = false;  // Allow re-recording
+                document.getElementById('recordingStatus').textContent = 'Upload failed — please re-record';
+                // Clear the pending answer so user must re-record
+                recordedAnswers[questionIdx] = null;
+            } finally {
+                document.getElementById('clearBtn').disabled = false;
+            }
+        }
+
+
+
+        async function pollAIStatusForQuestion(questionIdx) {
+            setUploadStatus('uploading', null, 'AI Analysis in progress...');
+            
+            const checkStatus = async () => {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/interview-report?email=${encodeURIComponent(email)}`);
+                    const data = await response.json();
+                    
+                    // Check if the specific question result exists and has expression analysis
+                    const result = data.results[questionIdx];
+                    if (result && result.expression && !result.expression.includes("Analyzing")) {
+                        setUploadStatus('success', '✨', `AI Processed: ${result.expression.toUpperCase()}`);
+                        return true; // Stop polling
+                    }
+                    return false;
+                } catch (e) {
+                    console.error("Status check failed", e);
+                    return false;
+                }
+            };
+
+            // Initial check
+            if (await checkStatus()) return;
+
+            // Poll every 3 seconds for max 1 minute
+            let attempts = 0;
+            const interval = setInterval(async () => {
+                attempts++;
+                if (await checkStatus() || attempts > 20) {
+                    clearInterval(interval);
+                    if (attempts > 20) {
+                        setUploadStatus('success', '✅', 'Saved (Background AI still running)');
+                    }
+                }
+            }, 3000);
+        }
+
+        function setUploadStatus(state, icon, message) {
+            const el = document.getElementById('uploadStatus');
+            const iconEl = document.getElementById('uploadIcon');
+            const msgEl = document.getElementById('uploadMsg');
+
+            el.className = 'upload-status ' + state;
+
+            if (state === 'uploading') {
+                iconEl.innerHTML = '<div class="spinner"></div>';
+            } else {
+                iconEl.textContent = icon;
+            }
+            msgEl.textContent = message;
+        }
+
+        // =========================
+        // Question Navigation
+        // =========================
+        function displayQuestion() {
+            console.log(`\n📍 DISPLAY QUESTION [index=${currentQuestion}]`);
+            const ansStatus = recordedAnswers[currentQuestion];
+            console.log(`   🔸 Current Answer Status: ${ansStatus ? (ansStatus.url ? 'Uploaded' : 'Pending') : 'Not Started'}`);
+            
+            // Debug: Check if we have questions
+            if (!questions || questions.length === 0) {
+                console.error("❌ ERROR: questions array is empty!");
+                document.getElementById('questionText').textContent = "Error: No questions loaded";
+                return;
+            }
+
+            if (currentQuestion >= questions.length) {
+                console.error("❌ ERROR: currentQuestion (" + currentQuestion + ") >= questions.length (" + questions.length + ")");
+                return;
+            }
+
+            const question = questions[currentQuestion];
+            console.log(`   ✅ Question Text: "${question}"`);
+            
+            document.getElementById('questionText').textContent = question;
+            document.getElementById('questionCounter').textContent = `Question ${currentQuestion + 1} of ${totalQuestions}`;
+            document.getElementById('progressText').textContent = `Question ${currentQuestion + 1} of ${totalQuestions}`;
+
+            // Update progress bar
+            const progress = ((currentQuestion + 1) / totalQuestions) * 100;
+            document.getElementById('progressFill').style.width = progress + '%';
+
+            // Reset recording UI
+            recordedChunks = [];
+            document.getElementById('stopBtn').disabled = true;
+            document.getElementById('submitBtn').disabled = true;
+            document.getElementById('submitBtn').style.display = 'none';
+
+            // Update navigation buttons
+            document.getElementById('prevBtn').disabled = currentQuestion === 0;
+
+            // CRITICAL: Only enable Next button if current question is answered
+            const ans = recordedAnswers[currentQuestion];
+            if (ans && ans.url) {
+                // Answer already uploaded — lock recording for this question
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('recordingStatus').textContent = 'Answer submitted ✓';
+                setUploadStatus('success', '✅', `Already uploaded (Q${currentQuestion + 1})`);
+                document.getElementById('nextBtn').disabled = false;
+            } else if (ans && ans.chunks && !ans.pending) {
+                // Answer submitted and uploaded — lock recording
+                document.getElementById('startBtn').disabled = true;
+                document.getElementById('recordingStatus').textContent = 'Answer submitted ✓';
+                setUploadStatus('success', '✅', `Answer submitted (Q${currentQuestion + 1})`);
+                document.getElementById('nextBtn').disabled = false;
+            } else if (ans && ans.pending) {
+                // Answer recorded but not yet submitted
+                document.getElementById('startBtn').disabled = false;
+                document.getElementById('recordingStatus').textContent = 'Recorded ✓';
+                document.getElementById('submitBtn').style.display = 'inline-block';
+                document.getElementById('submitBtn').disabled = false;
+                setUploadStatus('idle', '⏳', 'Click "Submit Answer" first');
+                document.getElementById('nextBtn').disabled = true;
+            } else {
+                // No answer yet — allow recording only within 5-question limit
+                const alreadyAnswered = Object.keys(recordedAnswers).filter(
+                    k => recordedAnswers[k] && (recordedAnswers[k].url || (recordedAnswers[k].chunks && !recordedAnswers[k].pending))
+                ).length;
+                if (alreadyAnswered >= totalQuestions) {
+                    document.getElementById('startBtn').disabled = true;
+                    document.getElementById('recordingStatus').textContent = 'All 5 questions answered';
+                } else {
+                    document.getElementById('startBtn').disabled = false;
+                    document.getElementById('recordingStatus').textContent = 'Ready';
+                }
+                setUploadStatus('idle', '☁️', 'Record and submit answer first');
+                document.getElementById('nextBtn').disabled = true;
+            }
+            
+            // Change Next button text to "Finish" on last question
+            if (currentQuestion === totalQuestions - 1) {
+                document.getElementById('nextBtn').textContent = '✓ Finish Interview';
+                document.getElementById('nextBtn').style.background = 'linear-gradient(135deg, #4caf50, #45a049)';
+                document.getElementById('nextBtn').style.color = 'white';
+                document.getElementById('nextBtn').style.borderColor = '#4caf50';
+            } else {
+                document.getElementById('nextBtn').textContent = 'Next →';
+                document.getElementById('nextBtn').style.background = 'white';
+                document.getElementById('nextBtn').style.color = '#333';
+                document.getElementById('nextBtn').style.borderColor = '#e0e0e0';
+            }
+            
+            console.log(`   ✅ UI Updated for Q${currentQuestion + 1}`);
+        }
+
+        function nextQuestion() {
+            console.log(`⏭️ Moving from Q${currentQuestion + 1} to next...`);
+            // Stop any ongoing recording before moving on
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+            if (recordingTimer) {
+                clearInterval(recordingTimer);
+                recordingTimer = null;
+            }
+
+            if (currentQuestion < totalQuestions - 1) {
+                currentQuestion++;
+                setCurrentQuestion(currentQuestion); // Persist to sessionStorage
+                console.log(`📍 Now at index ${currentQuestion} (Q${currentQuestion + 1})`);
+                displayQuestion();
+            } else if (currentQuestion === totalQuestions - 1) {
+                // Last question done — complete view
+                console.log(`🏁 Last question reached, showing complete view`);
+                document.getElementById('question-view').style.display = 'none';
+                document.getElementById('complete-view').style.display = 'block';
+                // Hide progress bar section if it exists
+                const progSec = document.querySelector('.progress-section');
+                if (progSec) progSec.style.display = 'none';
+            }
+        }
+
+        function previousQuestion() {
+            console.log(`⏮️ Moving back from Q${currentQuestion + 1}...`);
+            if (mediaRecorder && mediaRecorder.state === 'recording') {
+                mediaRecorder.stop();
+            }
+            if (recordingTimer) {
+                clearInterval(recordingTimer);
+                recordingTimer = null;
+            }
+            if (currentQuestion > 0) {
+                currentQuestion--;
+                setCurrentQuestion(currentQuestion); // Persist to sessionStorage
+                displayQuestion();
+            }
+        }
+
+        async function finishInterview() {
+            // Clear session state — next interview starts fresh
+            try {
+                localStorage.removeItem('interview_questions_' + email);
+                localStorage.removeItem('interview_current_q_' + email);
+                localStorage.removeItem('interview_session_id_' + email);
+            } catch(e) {}
+
+            try {
+                const formData = new FormData();
+                formData.append('email', email);
+                await fetch('http://127.0.0.1:8000/finish-interview', {
+                    method: 'POST',
+                    body: formData
+                });
+            } catch (err) {
+                console.error('Error starting transcription:', err);
+            }
+
+            // Change Complete View to evaluating state
+            document.getElementById('complete-view').innerHTML = `
+                <div class="complete-section" style="max-width: 100%;">
+                    <h2>Analyzing your Interview... 🤖</h2>
+                    <p>Whisper AI is extracting your speech and MediaPipe is analyzing your real-time facial expressions.</p>
+                    <div class="spinner" style="border-width:4px; width:45px; height:45px; border-top-color:#667eea; margin: 30px auto;"></div>
+                    <p style="color: #888; font-size: 0.9rem;">This may take a minute or two...</p>
+                </div>
+            `;
+
+            // Poll backend for the finalized AI evaluation report
+            const evalPoll = setInterval(async () => {
+                try {
+                    const response = await fetch(`http://127.0.0.1:8000/interview-report?email=${encodeURIComponent(email)}`);
+                    const data = await response.json();
+                    
+                    if (data.status === "completed") {
+                        clearInterval(evalPoll);
+                        
+                        let rowsHTML = "";
+                        data.results.forEach((item, index) => {
+                            rowsHTML += `
+                                <tr style="border-bottom: 1px solid #eaeaea;">
+                                    <td style="padding: 15px; font-weight:bold; color:#444;">Q${index+1}</td>
+                                    <td style="padding: 15px; font-size: 0.95rem; color:#555;">${item.question}</td>
+                                    <td style="padding: 15px; font-size: 0.9rem; font-style:italic;">"${item.transcription}"</td>
+                                    <td style="padding: 15px; font-weight:bold; color:#764ba2;">${item.expression ? item.expression.toUpperCase() : "N/A"}</td>
+                                    <td style="padding: 15px; font-size: 0.9rem; color:#0277bd; font-weight:500;">${item.feedback}</td>
+                                </tr>
+                            `;
+                        });
+
+                        document.getElementById('complete-view').innerHTML = `
+                            <div class="complete-section" style="max-width: 100%; text-align: left; padding: 20px;">
+                                <h2 style="color: #4caf50; text-align: center;">AI Evaluation Complete! 🎉</h2>
+                                <p style="text-align: center; margin-bottom: 25px;">Here is your personal interview transcription and expression analysis report:</p>
+                                
+                                <div style="overflow-x: auto; margin-bottom: 30px; border-radius:10px; border:1px solid #e0e0e0; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+                                    <table style="width: 100%; border-collapse: collapse;">
+                                        <tr style="background: #f8f9fa; text-align: left; border-bottom: 2px solid #667eea;">
+                                            <th style="padding: 15px;">#</th>
+                                            <th style="padding: 15px; width: 25%;">Question</th>
+                                            <th style="padding: 15px; width: 30%;">Extracted Speech</th>
+                                            <th style="padding: 15px; width: 15%;">Calculated Emotion</th>
+                                            <th style="padding: 15px; width: 25%;">AI Mark & Feedback</th>
+                                        </tr>
+                                        ${rowsHTML}
+                                    </table>
+                                </div>
+                                <div style="text-align: center;">
+                                    <button class="btn-finish" onclick="window.location.href='frontpage.html'">Finish & Return Home</button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                } catch (e) {
+                    console.error("Polling error", e);
+                }
+            }, 3000);
+        }
+
+        // Start interview on page load
+        window.addEventListener('load', initializeInterview);
+
+        // Cleanup on page unload
+        window.addEventListener('beforeunload', () => {
+            if (mediaStream) {
+                mediaStream.getTracks().forEach(track => track.stop());
+            }
+        });
+    </script>
+
+</body>
+</html>

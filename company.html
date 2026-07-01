@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Company Portal | AI Interview Evaluation</title>
+    <style>
+        :root {
+            --primary: #1a2a6c;
+            --accent: #4CAF50;
+            --glass-bg: rgba(255,255,255,0.92);
+            --text-main: #2c3e50;
+            --text-muted: #7f8c8d;
+        }
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background: linear-gradient(-45deg,#0f0c29,#302b63,#24243e,#1a2a6c);
+            background-size: 400% 400%;
+            animation: meshGradient 15s ease infinite;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: auto;
+            perspective: 1000px;
+        }
+        @keyframes meshGradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        .bg-icon {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.4;
+            filter: drop-shadow(0 0 10px rgba(255,255,255,0.2));
+            animation: floatIcon 10s ease-in-out infinite;
+        }
+        @keyframes floatIcon {
+            0%,100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-40px) rotate(10deg); }
+        }
+        .container {
+            background: var(--glass-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+            width: 100%;
+            max-width: 440px;
+            position: relative;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255,255,255,0.3);
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+            transform-style: preserve-3d;
+        }
+        .container:hover { box-shadow: 0 30px 70px rgba(0,0,0,0.5); }
+        .inner-content { transform: translateZ(30px); }
+        h2 {
+            text-align: center;
+            margin-bottom: 5px;
+            font-size: 26px;
+            color: var(--primary);
+            font-weight: 800;
+        }
+        .subtitle { text-align: center; font-size: 14px; color: var(--text-muted); margin-bottom: 25px; }
+        .tab {
+            display: flex;
+            background: #eef1f4;
+            padding: 5px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+        .tab button {
+            flex: 1;
+            background: none;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 9px;
+            font-weight: 700;
+            color: var(--text-muted);
+            transition: all 0.3s cubic-bezier(0.4,0,0.2,1);
+        }
+        .tab button.active {
+            background-color: white;
+            color: var(--primary);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            transform: scale(1.02);
+        }
+        .form-container {
+            display: none;
+            animation: fadeInRight 0.5s ease forwards;
+        }
+        @keyframes fadeInRight {
+            from { opacity: 0; transform: translateX(20px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .form-container.active { display: block; }
+        .form-group { margin-bottom: 15px; }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            color: var(--primary);
+            letter-spacing: 1px;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 13px;
+            border: 2px solid #eef1f4;
+            border-radius: 10px;
+            box-sizing: border-box;
+            font-size: 14px;
+            transition: all 0.3s;
+            background: #fdfdfd;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            background: white;
+            transform: translateZ(5px);
+        }
+        button[type="submit"] {
+            width: 100%;
+            padding: 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 15px;
+            box-shadow: 0 4px 15px rgba(26,42,108,0.2);
+        }
+        button[type="submit"]:hover {
+            background: #243b8c;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(26,42,108,0.4);
+        }
+        .required { color: #e74c3c; }
+        .note { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+        .slide-in-left { animation: slideInLeft 0.8s ease-out; }
+        @keyframes slideInLeft {
+            from { transform: translateX(-100%) rotateY(-10deg); opacity: 0; }
+            to { transform: translateX(0) rotateY(0deg); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <img src="https://img.icons8.com/isometric/512/office-chart.png" class="bg-icon" style="top: 10%; left: 5%; width: 150px;">
+    <img src="https://img.icons8.com/isometric/512/group-objects.png" class="bg-icon" style="bottom: 10%; right: 5%; width: 180px; animation-delay: -2s;">
+    <img src="https://img.icons8.com/isometric/512/brain.png" class="bg-icon" style="top: 20%; right: 15%; width: 100px; animation-delay: -5s;">
+    <div class="container" id="tiltCard">
+        <div class="inner-content">
+            <div class="tab">
+                <button class="tablinks active" onclick="openTab(event,'signin')">Sign In</button>
+                <button class="tablinks" onclick="openTab(event,'signup')">Register</button>
+            </div>
+            <div id="signin" class="form-container active">
+                <h2>Corporate Login</h2>
+                <p class="subtitle">Secure AI Dashboard</p>
+                <div id="signinMessage" style="margin-bottom: 15px; padding: 12px; border-radius: 8px; display: none;"></div>
+                <form id="signinForm">
+                    <div class="form-group">
+                        <label>Work Email <span class="required">*</span></label>
+                        <input type="email" id="signinEmail" placeholder="hr@company.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" id="signinPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit">Access Secure Portal</button>
+                </form>
+            </div>
+            <div id="signup" class="form-container">
+                <h2>Join Enterprise</h2>
+                <p class="subtitle">Advanced Talent Analytics</p>
+                <div id="signupMessage" style="margin-bottom: 15px; padding: 12px; border-radius: 8px; display: none;"></div>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label>Organization Name <span class="required">*</span></label>
+                        <input type="text" id="signupCompanyName" placeholder="Tech Global" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Work Email <span class="required">*</span></label>
+                        <input type="email" id="signupEmail" placeholder="admin@domain.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password <span class="required">*</span></label>
+                        <input type="password" id="signupPassword" placeholder="••••••••" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password <span class="required">*</span></label>
+                        <input type="password" id="signupConfirmPassword" placeholder="••••••••" required>
+                    </div>
+                    <button type="submit">Deploy System</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <script>
+        const API_URL = "http://localhost:8000";
+        document.getElementById('signinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signinEmail').value;
+            const password = document.getElementById('signinPassword').value;
+            const messageDiv = document.getElementById('signinMessage');
+            try {
+                const response = await fetch(`${API_URL}/company/login`, {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ company_name:'', email, password })
+                });
+                const data = await response.json();
+                if (data.message) {
+                    messageDiv.style.backgroundColor='#d4edda';
+                    messageDiv.style.color='#155724';
+                    messageDiv.textContent='✓ '+data.message;
+                    messageDiv.style.display='block';
+                    setTimeout(()=>alert('Welcome '+data.company_name+'!'),1000);
+                } else {
+                    messageDiv.style.backgroundColor='#f8d7da';
+                    messageDiv.style.color='#721c24';
+                    messageDiv.textContent='✗ '+(data.error||'Login failed');
+                    messageDiv.style.display='block';
+                }
+            } catch (error) {
+                messageDiv.style.backgroundColor='#f8d7da';
+                messageDiv.style.color='#721c24';
+                messageDiv.textContent='✗ Connection error!';
+                messageDiv.style.display='block';
+            }
+        });
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const company_name = document.getElementById('signupCompanyName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const messageDiv = document.getElementById('signupMessage');
+            if (password !== confirmPassword) {
+                messageDiv.style.backgroundColor='#f8d7da';
+                messageDiv.style.color='#721c24';
+                messageDiv.textContent='✗ Passwords do not match!';
+                messageDiv.style.display='block';
+                return;
+            }
+            try {
+                const response = await fetch(`${API_URL}/company/register`, {
+                    method:'POST',
+                    headers:{'Content-Type':'application/json'},
+                    body: JSON.stringify({ company_name, email, password })
+                });
+                const data = await response.json();
+                if (data.message) {
+                    messageDiv.style.backgroundColor='#d4edda';
+                    messageDiv.style.color='#155724';
+                    messageDiv.textContent='✓ Company registered! Redirecting...';
+                    messageDiv.style.display='block';
+                    document.getElementById('signupForm').reset();
+                    setTimeout(()=>window.location.href='frondpage.html',2000);
+                } else {
+                    messageDiv.style.backgroundColor='#f8d7da';
+                    messageDiv.style.color='#721c24';
+                    messageDiv.textContent='✗ '+(data.error||'Unknown error');
+                    messageDiv.style.display='block';
+                }
+            } catch (error) {
+                messageDiv.style.backgroundColor='#f8d7da';
+                messageDiv.style.color='#721c24';
+                messageDiv.textContent='✗ Connection error: '+error.message;
+                messageDiv.style.display='block';
+            }
+        });
+        const card = document.getElementById('tiltCard');
+        const motionRange = 4;
+        document.addEventListener('mousemove', (e) => {
+            const yRotation = ((e.clientX / window.innerWidth)-0.5)*motionRange;
+            const xRotation = ((e.clientY / window.innerHeight)-0.5)*-motionRange;
+            card.style.transform=`rotateX(${xRotation}deg) rotateY(${yRotation}deg)`;
+        });
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("form-container");
+            for (let i=0; i<tabcontent.length; i++) tabcontent[i].style.display="none";
+            const tablinks = document.getElementsByClassName("tablinks");
+            for (let i=0; i<tablinks.length; i++) tablinks[i].classList.remove("active");
+            document.getElementById(tabName).style.display="block";
+            evt.currentTarget.classList.add("active");
+        }
+        window.addEventListener('load', () => {
+            if(localStorage.getItem('pageSource')==='company') {
+                card.classList.add('slide-in-left');
+            }
+        });
+    </script>
+</body>
+</html>

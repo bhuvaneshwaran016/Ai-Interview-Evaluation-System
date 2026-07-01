@@ -1,0 +1,16 @@
+fastapi==0.135.2
+uvicorn==0.42.0
+sqlalchemy==2.0.48
+psycopg2-binary==2.9.11
+pydantic==2.12.5
+bcrypt==4.0.1
+cloudinary==1.44.1
+pdfplumber==0.11.9
+requests==2.33.1
+faster-whisper==1.0.3
+mediapipe==0.10.33
+opencv-python-headless==4.13.0.92
+python-dotenv==1.0.1
+imageio-ffmpeg==0.6.0
+jinja2==3.1.6
+python-multipart==0.0.22

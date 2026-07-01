@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Portal | Sign In & Sign Up</title>
+    <style>
+        :root {
+            --primary-color: #667eea;
+            --secondary-color: #764ba2;
+            --glass-bg: rgba(255, 255, 255, 0.9);
+            --text-dark: #2d3436;
+            --transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        body {
+            font-family: 'Segoe UI', sans-serif;
+            background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+            background-size: 400% 400%;
+            animation: gradientMove 15s ease infinite;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: auto;
+            position: relative;
+            perspective: 1000px;
+        }
+
+        @keyframes gradientMove {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .floating-img {
+            position: absolute;
+            z-index: 1;
+            opacity: 0.6;
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
+            animation: floatAnim 8s ease-in-out infinite;
+        }
+
+        @keyframes floatAnim {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(10deg); }
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            background: var(--glass-bg);
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            width: 90%;
+            max-width: 420px;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255,255,255,0.4);
+            transform-style: preserve-3d;
+            transition: transform 0.1s ease-out, box-shadow 0.3s ease;
+        }
+
+        .inner-wrap { transform: translateZ(40px); }
+
+        h2 { text-align: center; color: var(--text-dark); margin-bottom: 20px; font-weight: 800; }
+
+        .tab {
+            display: flex;
+            background: #f1f3f5;
+            padding: 5px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+        }
+
+        .tab button {
+            flex: 1;
+            background: transparent;
+            border: none;
+            padding: 12px;
+            cursor: pointer;
+            border-radius: 12px;
+            font-weight: 700;
+            color: #7f8c8d;
+            transition: var(--transition);
+        }
+
+        .tab button.active {
+            background-color: white;
+            color: var(--primary-color);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            transform: scale(1.02);
+        }
+
+        .form-container {
+            display: none;
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
+        @keyframes slideIn {
+            from { opacity: 0; transform: translateZ(-20px) translateY(10px); }
+            to { opacity: 1; transform: translateZ(0) translateY(0); }
+        }
+
+        .form-container.active { display: block; }
+
+        .form-group { margin-bottom: 18px; }
+
+        label { display: block; margin-bottom: 8px; font-size: 0.85rem; font-weight: 700; color: #495057; }
+
+        input, select {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #eef1f4;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+            box-sizing: border-box;
+        }
+
+        select {
+            cursor: pointer;
+            appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='currentColor' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6 9 12 15 18 9'%3e%3c/polyline%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 14px center;
+            background-size: 20px;
+            padding-right: 40px;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            background: #fff;
+            transform: translateZ(5px);
+        }
+
+        button[type="submit"] {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: var(--transition);
+            margin-top: 10px;
+            box-shadow: 0 10px 20px rgba(102, 126, 234, 0.3);
+        }
+
+        button[type="submit"]:hover {
+            transform: translateY(-2px) scale(1.01);
+            box-shadow: 0 15px 25px rgba(102, 126, 234, 0.4);
+            filter: brightness(1.1);
+        }
+
+        .slide-up { animation: slideInUp 0.8s ease-out; }
+        @keyframes slideInUp {
+            from { transform: translateY(100%) rotateX(10deg); opacity: 0; }
+            to { transform: translateY(0) rotateX(0deg); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+
+    <img src="https://img.icons8.com/isometric/512/graduation-cap.png" class="floating-img" style="top: 10%; left: 10%; width: 140px;">
+    <img src="https://img.icons8.com/isometric/512/books.png" class="floating-img" style="bottom: 15%; left: 15%; width: 120px; animation-delay: -2s;">
+    <img src="https://img.icons8.com/isometric/512/rocket.png" class="floating-img" style="top: 20%; right: 10%; width: 130px; animation-delay: -4s;">
+
+    <div class="container" id="tiltBox">
+        <div class="inner-wrap">
+            <div class="tab">
+                <button class="tablinks active" onclick="openTab(event, 'signin')">Sign In</button>
+                <button class="tablinks" onclick="openTab(event, 'signup')">Sign Up</button>
+            </div>
+
+            <div id="signin" class="form-container active">
+                <h2>Student Login</h2>
+                <div id="signinMessage" style="margin-bottom: 15px; padding: 12px; border-radius: 8px; display: none;"></div>
+                <form id="signinForm">
+                    <div class="form-group">
+                        <label>Email Address</label>
+                        <input type="email" id="signinEmail" placeholder="student@university.edu" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="signinPassword" placeholder="••••••••" maxlength="72" required>
+                        <small style="color: #999; font-size: 0.75rem; margin-top: 4px; display: block;">Max 72 characters</small>
+                    </div>
+                    <button type="submit">Enter Portal</button>
+                </form>
+            </div>
+
+            <div id="signup" class="form-container">
+                <h2>Create Profile</h2>
+                <div id="signupMessage" style="margin-bottom: 15px; padding: 12px; border-radius: 8px; display: none;"></div>
+                <form id="signupForm">
+                    <div class="form-group">
+                        <label>Full Name</label>
+                        <input type="text" id="signupName" placeholder="John Doe" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Email</label>
+                        <input type="email" id="signupEmail" placeholder="student@mail.com" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Password</label>
+                        <input type="password" id="signupPassword" placeholder="••••••••" minlength="6" maxlength="72" required>
+                        <small style="color: #999; font-size: 0.75rem; margin-top: 4px; display: block;">6-72 characters</small>
+                    </div>
+                    <div class="form-group">
+                        <label>Confirm Password</label>
+                        <input type="password" id="signupConfirmPassword" placeholder="••••••••" minlength="6" maxlength="72" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Role</label>
+                        <select id="signupRole" required>
+                            <option value="">Select your role</option>
+                            <option value="student">Student</option>
+                            <option value="instructor">Graduate</option>
+                            <option value="admin">Worker</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Experience (Years)</label>
+                        <input type="number" id="signupExperience" placeholder="0" min="0" max="50" required>
+                    </div>
+                    <div class="form-group">
+                        <label>Phone</label>
+                        <input type="tel" id="signupPhone" placeholder="Phone Number" required>
+                    </div>
+                    
+                    <button type="submit">Start Journey</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const API_URL = "http://localhost:8000";
+        const tiltBox = document.getElementById('tiltBox');
+        const degree = 4;
+
+        document.addEventListener('mousemove', (e) => {
+            const centerX = window.innerWidth / 2;
+            const centerY = window.innerHeight / 2;
+            const rotateX = ((e.clientY - centerY) / centerY) * -degree;
+            const rotateY = ((e.clientX - centerX) / centerX) * degree;
+            tiltBox.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+        });
+
+        function openTab(evt, tabName) {
+            const tabcontent = document.getElementsByClassName("form-container");
+            for (let i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].style.display = "none";
+                tabcontent[i].classList.remove("active");
+            }
+            const tablinks = document.getElementsByClassName("tablinks");
+            for (let i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            document.getElementById(tabName).style.display = "block";
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+        }
+
+        document.getElementById('signinForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const email = document.getElementById('signinEmail').value;
+            const password = document.getElementById('signinPassword').value;
+            const messageDiv = document.getElementById('signinMessage');
+
+            try {
+                const response = await fetch(`${API_URL}/student/login`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+
+                if (data.message) {
+                    messageDiv.style.backgroundColor = '#d4edda';
+                    messageDiv.style.color = '#155724';
+                    messageDiv.textContent = '✓ ' + data.message;
+                    messageDiv.style.display = 'block';
+                    // Store username and email, then redirect
+                    localStorage.setItem('username', data.name || 'User');
+                    localStorage.setItem('email', email);
+                    setTimeout(() => window.location.href = 'attach_resume.html', 1000);
+                } else {
+                    messageDiv.style.backgroundColor = '#f8d7da';
+                    messageDiv.style.color = '#721c24';
+                    messageDiv.textContent = '✗ ' + (data.error || 'Login failed');
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                messageDiv.style.backgroundColor = '#f8d7da';
+                messageDiv.style.color = '#721c24';
+                messageDiv.textContent = '✗ Connection error: ' + error.message + ' (Is backend running on http://localhost:8000?)';
+                messageDiv.style.display = 'block';
+                console.error('Login error:', error);
+            }
+        });
+
+        document.getElementById('signupForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const name = document.getElementById('signupName').value;
+            const email = document.getElementById('signupEmail').value;
+            const password = document.getElementById('signupPassword').value;
+            const confirmPassword = document.getElementById('signupConfirmPassword').value;
+            const role = document.getElementById('signupRole').value;
+            const experience = document.getElementById('signupExperience').value;
+            const phone = document.getElementById('signupPhone').value;
+            const messageDiv = document.getElementById('signupMessage');
+
+            // Validate passwords match
+            if (password !== confirmPassword) {
+                messageDiv.style.backgroundColor = '#f8d7da';
+                messageDiv.style.color = '#721c24';
+                messageDiv.textContent = '✗ Passwords do not match!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            // Validate password length
+            if (password.length < 6) {
+                messageDiv.style.backgroundColor = '#f8d7da';
+                messageDiv.style.color = '#721c24';
+                messageDiv.textContent = '✗ Password must be at least 6 characters!';
+                messageDiv.style.display = 'block';
+                return;
+            }
+
+            try {
+                const response = await fetch(`${API_URL}/add_user`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ name, email, password, role, experience: parseInt(experience), phone })
+                });
+                
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                
+                const data = await response.json();
+
+                if (data.message) {
+                    messageDiv.style.backgroundColor = '#d4edda';
+                    messageDiv.style.color = '#155724';
+                    messageDiv.textContent = '✓ Account created! Redirecting...';
+                    messageDiv.style.display = 'block';
+                    // Store username and email
+                    localStorage.setItem('username', name);
+                    localStorage.setItem('email', email);
+                    document.getElementById('signupForm').reset();
+                    setTimeout(() => window.location.href = 'attach_resume.html', 2000);
+                } else {
+                    messageDiv.style.backgroundColor = '#f8d7da';
+                    messageDiv.style.color = '#721c24';
+                    messageDiv.textContent = '✗ ' + (data.error || 'Unknown error');
+                    messageDiv.style.display = 'block';
+                }
+            } catch (error) {
+                messageDiv.style.backgroundColor = '#f8d7da';
+                messageDiv.style.color = '#721c24';
+                messageDiv.textContent = '✗ Connection error: ' + error.message + ' (Is backend running on http://localhost:8000?)';
+                messageDiv.style.display = 'block';
+                console.error('Signup error:', error);
+            }
+        });
+    </script>
+</body>
+</html>

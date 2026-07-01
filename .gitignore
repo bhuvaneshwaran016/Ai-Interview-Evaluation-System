@@ -1,0 +1,39 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.egg-info/
+
+# Virtual environments
+venv/
+.venv/
+env/
+deepface_env/
+
+# Environment variables / secrets
+.env
+
+# Database
+*.db
+*.sqlite3
+interview_db
+
+# Media / generated data
+videos/
+*.webm
+*.csv
+*.pdf
+temp_*
+*.task
+
+# Logs / misc
+out.txt
+*.log
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/

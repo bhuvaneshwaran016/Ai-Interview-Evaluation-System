@@ -1,0 +1,24 @@
+[project]
+name = "ai-interview-evaluation-system"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "bcrypt==4.0.1",
+    "cloudinary==1.44.1",
+    "fastapi==0.135.2",
+    "faster-whisper==1.0.3",
+    "imageio-ffmpeg==0.6.0",
+    "jinja2==3.1.6",
+    "mediapipe==0.10.33",
+    "opencv-python-headless==4.13.0.92",
+    "pdfplumber==0.11.9",
+    "psycopg2-binary==2.9.11",
+    "pydantic==2.12.5",
+    "python-dotenv==1.0.1",
+    "python-multipart==0.0.22",
+    "requests==2.33.1",
+    "sqlalchemy==2.0.48",
+    "uvicorn==0.42.0",
+]
